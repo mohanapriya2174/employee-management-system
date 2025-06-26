@@ -1,0 +1,108 @@
+{
+  "2025": {
+    "June": {
+      "24": [
+        {
+          "id": "DL101",
+          "date": "2025-06-24",
+          "address": "Express Avenue Mall, Whites Rd, Royapettah, Chennai",
+          "lat": 13.0827,
+          "lng": 80.2707,
+          "load_size": 3,
+          "delivery_deadline": "2025-06-27",
+          "status": "Not Started",
+          "assigned_to": ""
+        }
+      ],
+      "25": [
+        {
+          "id": "PKG001",
+          "date": "2025-06-20",
+          "address": "Express Avenue Mall, Whites Rd, Royapettah, Chennai",
+          "lat": 13.0827,
+          "lng": 80.2707,
+          "load_size": 12,
+          "delivery_deadline": "2025-06-27T13:00:00",
+          "status": "Not Started",
+          "assigned_to": ""
+        },
+        {
+          "id": "PKG002",
+          "date": "2025-06-20",
+          "address": "Citi Centre, Dr Radhakrishnan Salai, Mylapore, Chennai",
+          "lat": 13.0879,
+          "lng": 80.2107,
+          "load_size": 8,
+          "delivery_deadline": "2025-06-24T14:00:00",
+          "status": "Not Started",
+          "assigned_to": ""
+        },
+        {
+          "id": "PKG003",
+          "date": "2025-06-20",
+          "address": "Anna University, Sardar Patel Rd, Guindy, Chennai",
+          "lat": 12.9791,
+          "lng": 80.2215,
+          "load_size": 5,
+          "delivery_deadline": "2025-06-24T15:00:00",
+          "status": "Not Started",
+          "assigned_to": ""
+        },
+        {
+          "id": "PKG104",
+          "address": "Phoenix Marketcity, Velachery Road, Chennai",
+          "lat": 12.9896,
+          "lng": 80.2181,
+          "load_size": 8,
+          "delivery_deadline": "2025-06-25T14:30:00",
+          "status": "Not Started",
+          "assigned_to": ""
+        },
+        {
+          "id": "PKG105",
+          "address": "TCS, Thoraipakkam, Rajiv Gandhi Salai (OMR), Chennai",
+          "lat": 12.9491,
+          "lng": 80.2406,
+          "load_size": 14,
+          "delivery_deadline": "2025-06-24T15:00:00",
+          "status": "Not Started",
+          "assigned_to": ""
+        },
+        {
+          "id": "PKG106",
+          "address": "Infosys, Sholinganallur, Chennai",
+          "lat": 12.8996,
+          "lng": 80.227,
+          "load_size": 10,
+          "delivery_deadline": "2025-06-26T15:30:00",
+          "status": "Not Started",
+          "assigned_to": ""
+        },
+        {
+          "id": "PKG009",
+          "date": "2025-06-23",
+          "address": "Express Avenue Mall, Whites Rd, Royapettah, Chennai",
+          "lat": 13.0827,
+          "lng": 80.2707,
+          "load_size": 12,
+          "delivery_deadline": "2025-06-27",
+          "status": "Not Started",
+          "assigned_to": ""
+        }
+      ],
+      "26": [
+        {
+          "id": "DL202",
+          "date": "2025-06-25",
+          "address": "Express Avenue Mall, Whites Rd, Royapettah, Chennai",
+          "lat": 13.0827,
+          "lng": 80.2707,
+          "load_size": 4,
+          "delivery_deadline": "2025-06-28",
+          "status": "Not Started",
+          "assigned_to": "user1"
+        }
+      ]
+    }
+  }
+}

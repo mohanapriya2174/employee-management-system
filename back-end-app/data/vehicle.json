@@ -1,0 +1,15 @@
+[
+    {
+      "id": "VEH001",
+      "type": "Mini Van",
+      "load_capacity": 25,
+      "assigned_to": "1749800232450"
+    },
+    {
+      "id": "VEH002",
+      "type": "Bike",
+      "load_capacity": 20,
+      "assigned_to": "EMP002"
+    }
+  ]
+  

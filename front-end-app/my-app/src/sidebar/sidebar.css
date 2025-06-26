@@ -1,0 +1,42 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.sidebar {
+  width: 220px;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  background-color: #1a1a2e;
+  color: white;
+  position: fixed;
+  z-index: 1000;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.sidebar a.active {
+  background-color: #16213e;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f6f8;
+}

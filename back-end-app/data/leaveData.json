@@ -1,0 +1,56 @@
+[
+  {
+    "name": "user1",
+    "id": "1749800232450",
+    "fromDate": "2025-06-25",
+    "toDate": "2025-06-25",
+    "noOfDays": "1",
+    "reason": "health check up",
+    "status": "Applied"
+  },
+  {
+    "name": "user1",
+    "id": "1749800232450",
+    "fromDate": "2025-06-19",
+    "toDate": "2025-06-26",
+    "noOfDays": "7",
+    "reason": "vacation ",
+    "status": "Applied"
+  },
+  {
+    "name": "user1",
+    "id": "1749800232450",
+    "fromDate": "2025-06-18",
+    "toDate": "2025-06-20",
+    "noOfDays": "3",
+    "reason": "Personal vacation",
+    "status": "Approved"
+  },
+  {
+    "name": "user1",
+    "id": "1749800232450",
+    "fromDate": "2025-06-30",
+    "toDate": "2025-06-30",
+    "noOfDays": "1",
+    "reason": "Personal vacation",
+    "status": "Approved"
+  },
+  {
+    "name": "Priya",
+    "id": "EMP123",
+    "fromDate": "2025-06-18",
+    "toDate": "2025-06-20",
+    "noOfDays": "3",
+    "reason": "Personal vacation",
+    "status": "Approved"
+  },
+  {
+    "name": "Priya",
+    "id": "EMP123",
+    "fromDate": "2025-06-18",
+    "toDate": "2025-06-20",
+    "noOfDays": "3",
+    "reason": "Personal vacation",
+    "status": "Applied"
+  }
+]

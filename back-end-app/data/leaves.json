@@ -1,0 +1,30 @@
+{
+  "2025": {
+    "June": {
+      "23": [
+        {
+          "id": "PKG001",
+          "date": "2025-06-23",
+          "address": "Express Avenue Mall, Whites Rd, Royapettah, Chennai",
+          "lat": 13.0827,
+          "lng": 80.2707,
+          "load_size": 12,
+          "delivery_deadline": "2025-06-27",
+          "status": "Not Started",
+          "assigned_to": ""
+        },
+        {
+          "id": "PKG009",
+          "date": "2025-06-23",
+          "address": "Express Avenue Mall, Whites Rd, Royapettah, Chennai",
+          "lat": 13.0827,
+          "lng": 80.2707,
+          "load_size": 12,
+          "delivery_deadline": "2025-06-27",
+          "status": "Not Started",
+          "assigned_to": ""
+        }
+      ]
+    }
+  }
+}

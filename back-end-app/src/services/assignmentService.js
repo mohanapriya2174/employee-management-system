@@ -1,24 +1,63 @@
 const dayjs = require("dayjs");
+const fs = require("fs");
+const path = require("path");
+
+const deliveriesPath = path.join(__dirname, "../../data/deliveries.json");
+const vechilePath = path.join(__dirname, "../../data/vehicle.json");
+
+//const deliveries = deliveriesData["2025"]?.["June"]?.["26"] || [];
 const deliveriesData = require("../../data/deliveries.json");
 const userService = require("../services/delivery-assignService");
-
-const today = new Date();
-const year = today.getFullYear().toString();
-const month = today.getMonth().toString();
-const date = today.getDate().toString();
-
-const deliveries = deliveriesData[year]?.[month]?.[date] || [];
 const employees = require("../../data/employee.json");
 const vehicles = require("../../data/vehicle.json");
 const { getDrivingRoute } = require("../del-assignment/get-route");
 const { fetchLatLng } = require("../del-assignment/geo-code");
 
+function flattenDeliveries(obj) {
+  const list = [];
+  for (const y of Object.keys(obj)) {
+    for (const m of Object.keys(obj[y])) {
+      for (const d of Object.keys(obj[y][m])) {
+        list.push(...obj[y][m][d]);
+      }
+    }
+  }
+  return list;
+}
+
+function patchAssignedTo(tree, delivery, employeeId) {
+  const dt = dayjs(delivery.date);
+  const yKey = dt.year().toString();
+  const mKey = dt.month().toString(); // 0-based
+  const dKey = dt.date().toString();
+
+  const bucket = tree?.[yKey]?.[mKey]?.[dKey];
+  if (!bucket) return false;
+
+  const target = bucket.find((d) => d.id === delivery.id);
+  if (!target) return false;
+
+  target.assigned_to = employeeId;
+  return true;
+}
+
+function pathchVechileCap(employee, addedLoad) {
+  const v = vehicles.find((veh) => veh.id === employee.vehicle_id);
+  if (!v) return;
+  v.load_capacity = Math.max(0, v.load_capacity - addedLoad);
+}
+
 exports.assignDeliveries = async () => {
   const assignments = [];
+  const deliveries = flattenDeliveries(deliveriesData)
+    .filter((d) => !d.assigned_to) // unassigned only
+    .sort((a, b) =>
+      dayjs(a.delivery_deadline).diff(dayjs(b.delivery_deadline))
+    );
   console.log(deliveries);
 
   for (const delivery of deliveries) {
-    if (delivery.assigned_to) continue;
+    // if (delivery.assigned_to) continue;
 
     let bestEmployee = null;
     let shortestEta = Infinity;
@@ -60,6 +99,8 @@ exports.assignDeliveries = async () => {
         ]);
 
         const eta = route.durationMinutes;
+        console.log(eta);
+        console.log(`current load of ${emp.id} is ${delivery.load_size}`);
         const deadline = dayjs(delivery.delivery_deadline);
         const arrival = dayjs().add(eta, "minute");
 
@@ -76,6 +117,8 @@ exports.assignDeliveries = async () => {
 
     if (bestEmployee) {
       delivery.assigned_to = bestEmployee.id;
+      patchAssignedTo(deliveriesData, delivery, bestEmployee.id);
+      pathchVechileCap(bestEmployee, delivery.load_size);
       bestEmployee.assigned_deliveries = bestEmployee.assigned_deliveries || [];
       bestEmployee.assigned_deliveries.push(delivery.id);
       bestEmployee.current_load =
@@ -91,7 +134,12 @@ exports.assignDeliveries = async () => {
       });
     }
   }
-  
+  fs.writeFileSync(
+    deliveriesPath,
+    JSON.stringify(deliveriesData, null, 2),
+    "utf8"
+  );
 
+  fs.writeFileSync(vechilePath, JSON.stringify(vehicles, null, 2), "utf8");
   return assignments;
 };

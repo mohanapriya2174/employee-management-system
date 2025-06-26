@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const AsignmentTable = () => {
   const [deliveries, setdeliveries] = useState([]);
+  const [unassigned, setunassigned] = useState([]);
 
   useEffect(() => {
     const fetchDeliveries = async () => {
@@ -24,6 +25,7 @@ const AsignmentTable = () => {
         const today = new Date().toISOString().split("T")[0];
 
         const filtered = [];
+        const unassigned_del = [];
 
         for (let year in data) {
           const years = data[year];
@@ -37,7 +39,10 @@ const AsignmentTable = () => {
                 //const unassigned = items.assigned_to === undefined;
 
                 if (istoday || isnotCompleted) {
-                  if (items.assigned_to === "") continue;
+                  if (items.assigned_to === "") {
+                    unassigned_del.push(items);
+                    continue;
+                  }
                   filtered.push(items);
                 }
               }
@@ -46,6 +51,7 @@ const AsignmentTable = () => {
         }
         console.log(filtered);
         setdeliveries(filtered);
+        setunassigned(unassigned_del);
       } catch (err) {
         console.error("Failed to fetch leave data:", err.message);
       }
@@ -63,6 +69,7 @@ const AsignmentTable = () => {
             <th>Employee Name</th>
             <th>Delivery Id</th>
             <th>Delivery Status</th>
+            <th>deadline</th>
           </tr>
         </thead>
         <tbody>
@@ -72,7 +79,31 @@ const AsignmentTable = () => {
               <td>{items.assigned_to}</td>
               <td>{items.assigned_to}</td>
               <td>{items.id}</td>
+              <td onClick={()=>{
+                toggelStatus(items,index);
+              }}>{items.status}</td>
+              <td>{items.delivery_deadline.split("T")[0]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <h3>Unassigned Deliveries</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Delivery Id</th>
+            <th>Delivery Status</th>
+            <th>deadline</th>
+          </tr>
+        </thead>
+        <tbody>
+          {unassigned.map((items, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{items.id}</td>
               <td>{items.status}</td>
+              <td>{items.delivery_deadline.split("T")[0]}</td>
             </tr>
           ))}
         </tbody>

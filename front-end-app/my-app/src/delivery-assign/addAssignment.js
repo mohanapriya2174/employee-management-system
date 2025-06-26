@@ -42,6 +42,7 @@ const AddAssignment = () => {
       status: "Not Started",
       assigned_to: "",
     };
+
     try {
       const response = await fetch("http://localhost:4000/api/addassignment", {
         method: "put",

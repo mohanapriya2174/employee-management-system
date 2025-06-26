@@ -24,6 +24,9 @@ button {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
+.table-section h3 {
+  margin-left: 240px;
+}
 table {
   width: auto;
   border-collapse: collapse;

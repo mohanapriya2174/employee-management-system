@@ -1,17 +1,19 @@
-const fs = require("fs");
-const path = require("path");
+const mysql = require("mysql2/promise");
+const dotenv = require("dotenv");
 const dayjs = require("dayjs");
-const deliveriesPath = path.join(__dirname, "../../data/deliveries.json");
-//const deliveriesPath = path.join(__dirname, "/back-end-app/data/deliveries.json");
-function getalldeliveries() {
-  if (fs.existsSync(deliveriesPath)) {
-    const context = JSON.parse(fs.readFileSync(deliveriesPath, "utf-8"));
-    return context;
-  }
-}
 
-function uploadDelivery(input) {
-  const { id, date, address, lat, lng, load_size, delivery_deadline } = input;
+const connection = require("../model"); // Adjust path as needed
+
+async function uploadDelivery(input, createdById) {
+  const {
+    id, // delivery_id
+    date,
+    address,
+    lat,
+    lng,
+    load_size,
+    delivery_deadline,
+  } = input;
 
   // Basic validation
   if (
@@ -26,41 +28,37 @@ function uploadDelivery(input) {
     throw new Error("Missing required fields.");
   }
 
-  const d = dayjs(date);
-  const year = d.format("YYYY");
-  const month = d.format("MMMM"); // e.g., June
-  const day = d.format("D"); // e.g., 23
+  const deliveryDate = dayjs(date).format("YYYY-MM-DD");
+  const deadline = dayjs(delivery_deadline).format("YYYY-MM-DD HH:mm:ss");
 
-  // New delivery object
-  const newDelivery = {
+  // Prepare SQL Insert
+  const query = `
+    INSERT INTO deliveries (
+      id, delivery_date, address, latitude, longitude,
+      load_size, delivery_deadline, status, assigned_to
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  await connection.query(query, [
     id,
-    date,
+    deliveryDate,
     address,
-    lat: parseFloat(lat),
-    lng: parseFloat(lng),
-    load_size: parseInt(load_size),
-    delivery_deadline,
-    status: "Not Started",
-    assigned_to: "",
-  };
+    parseFloat(lat),
+    parseFloat(lng),
+    parseInt(load_size),
+    deadline,
+    "Not Started", // Default status
+    "", // Default assigned_to
+  ]);
 
-  // Read existing deliveries
-  let deliveries = {};
-  deliveries = getalldeliveries();
-
-  // Ensure nested structure
-  if (!deliveries[year]) deliveries[year] = {};
-  if (!deliveries[year][month]) deliveries[year][month] = {};
-  if (!deliveries[year][month][day]) deliveries[year][month][day] = [];
-
-  // Push the new delivery
-  deliveries[year][month][day].push(newDelivery);
-
-  // Write back to file
-  fs.writeFileSync(deliveriesPath, JSON.stringify(deliveries, null, 2));
-  console.log("✅ Delivery uploaded successfully.");
+  console.log("✅ Delivery inserted into MySQL.");
 }
 
+async function getalldeliveries() {
+  const [rows] = await connection.query("SELECT * FROM deliveries");
+  console.log(rows);
+  return rows;
+}
 module.exports = {
   uploadDelivery,
   getalldeliveries,

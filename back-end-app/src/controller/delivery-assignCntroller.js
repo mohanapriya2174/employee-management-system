@@ -4,18 +4,20 @@ const SECRET_KEY = "process.env.SECRET_KEY";
 
 exports.addDelivery = async (req, res) => {
   try {
-    // const { id, date, address, lat, lng, load_size, delivery_deadline } =
-    //   req.body;
     const id = req.user.id;
     const users = await userService.findUserwithid(id);
+
     if (users.role === "admin") {
-      deliveryService.uploadDelivery(req.body, id);
+      await deliveryService.uploadDelivery(req.body, id); // ← Important to await
       res.status(200).json({ message: "Delivery uploaded successfully." });
+    } else {
+      res.status(403).json({ message: "Unauthorized" });
     }
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error updating leave", error: err.message });
+    res.status(500).json({
+      message: "Error uploading delivery",
+      error: err.message,
+    });
   }
 };
 

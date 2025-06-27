@@ -7,57 +7,76 @@ const AsignmentTable = () => {
   useEffect(() => {
     const fetchDeliveries = async () => {
       const token = localStorage.getItem("token");
+
       try {
         const response = await fetch(
           "http://localhost:4000/api/getdeliveries",
           {
             headers: {
               Authorization: token,
-              "content-Type": "application/json",
+              "Content-Type": "application/json",
             },
           }
         );
-        const result = await response.json();
-        const data = result.deliveries;
 
-        console.log(data);
+        const result = await response.json();
+        const rawDeliveries = result.deliveries;
 
         const today = new Date().toISOString().split("T")[0];
 
-        const filtered = [];
-        const unassigned_del = [];
+        const assigned = [];
+        const unassigned = [];
 
-        for (let year in data) {
-          const years = data[year];
-          for (let month in years) {
-            const months = years[month];
-            for (let date in months) {
-              const deliverylist = data[year][month][date];
-              for (let items of deliverylist) {
-                const istoday = items.date === today;
-                const isnotCompleted = items.status !== "completed";
-                //const unassigned = items.assigned_to === undefined;
+        for (let d of rawDeliveries) {
+          const deliveryDate = d.delivery_date.split("T")[0];
+          const deadline = d.delivery_deadline.split("T")[0];
 
-                if (istoday || isnotCompleted) {
-                  if (items.assigned_to === "") {
-                    unassigned_del.push(items);
-                    continue;
-                  }
-                  filtered.push(items);
-                }
-              }
-            }
+          const deliveryObj = {
+            id: d.id,
+            date: deliveryDate,
+            address: d.address,
+            lat: parseFloat(d.latitude),
+            lng: parseFloat(d.longitude),
+            load_size: d.load_size,
+            delivery_deadline: deadline,
+            status: d.status,
+            assigned_to: d.assigned_to || "",
+          };
+
+          const isToday = deliveryObj.date === today;
+          const isNotCompleted = deliveryObj.status !== "completed";
+
+          if ((isToday || isNotCompleted) && !deliveryObj.assigned_to) {
+            unassigned.push(deliveryObj);
+          } else {
+            assigned.push(deliveryObj);
           }
         }
-        console.log(filtered);
-        setdeliveries(filtered);
-        setunassigned(unassigned_del);
+
+        setdeliveries(assigned);
+        setunassigned(unassigned);
+        console.log("✅ Assigned:", assigned);
+        console.log("⏳ Unassigned:", unassigned);
       } catch (err) {
-        console.error("Failed to fetch leave data:", err.message);
+        console.error("❌ Failed to fetch deliveries:", err.message);
       }
     };
     fetchDeliveries();
   }, []);
+
+  // const toggelStatus = ( items, index) => {
+  //   const updatedList = [...targetList];
+  //   const currentStatus = updatedList[index].status;
+
+  //   let nextStatus = "not started";
+  //   if (currentStatus === "not started") nextStatus = "pending";
+  //   else if (currentStatus === "pending") nextStatus = "completed";
+  //   else if (currentStatus === "completed") nextStatus = "not started";
+
+  //   updatedList[index].status = nextStatus;
+  //   setList(updatedList);
+  // };
+
   return (
     <div className="table-section">
       <h3>Assigned Deliveries</h3>
@@ -79,9 +98,13 @@ const AsignmentTable = () => {
               <td>{items.assigned_to}</td>
               <td>{items.assigned_to}</td>
               <td>{items.id}</td>
-              <td onClick={()=>{
-                toggelStatus(items,index);
-              }}>{items.status}</td>
+              <td
+              // onClick={() => {
+              //   toggelStatus(items, index);
+              // }}
+              >
+                {items.status}
+              </td>
               <td>{items.delivery_deadline.split("T")[0]}</td>
             </tr>
           ))}

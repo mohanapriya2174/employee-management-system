@@ -52,7 +52,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = userService.findUser(email);
+    const user = await userService.findUser(email);
 
     if (!user || !bcrypt.compareSync(password, user.password)) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -125,7 +125,7 @@ exports.addLeave = async (req, res) => {
     const newLeave = {
       ...req.body,
     };
-    const addedLeave = userService.addLeave(newLeave);
+    const addedLeave = await userService.addLeave(newLeave);
     res.status(201).json({ message: "Leave added", leave: addedLeave });
   } catch (err) {
     res.status(500).json({ message: "Error adding leave", error: err.message });
@@ -133,8 +133,8 @@ exports.addLeave = async (req, res) => {
 };
 exports.approve = async (req, res) => {
   try {
-    const index = req.body.index;
-    userService.updateapprove(index);
+    const id = req.body.id;
+    userService.updateapprove(id);
     res.status(201).json({ message: "approved" });
   } catch (err) {
     res
@@ -149,14 +149,14 @@ exports.attendence = async (req, res) => {
     const { month, year, role, empId } = req.body;
     //const users = await userService.findUser(email);
     if (role === "emp") {
-      const attendence = userService.getattendence(id, month, year);
+      const attendence = await userService.getattendence(id, month, year);
       //console.log(attendence);
       res.status(200).json({
         attendence: attendence,
         //user: users,
       });
     } else {
-      const attendence = userService.getattendence(empId, month, year);
+      const attendence = await userService.getattendence(empId, month, year);
       //console.log(attendence);
       res.status(200).json({
         attendence: attendence,
@@ -172,13 +172,14 @@ exports.attendence = async (req, res) => {
 
 exports.updateAttendence = async (req, res) => {
   try {
-    const { month, year, role, empId, updated } = req.body;
-    userService.updateAttendence(empId, month, year, updated);
-    res.status(201).json({ message: "approved" });
+    const { empId, year, month, day, hour, status } = req.body;
+
+    await userService.updateAttendence(empId, year, month, day, hour, status);
+
+    res.status(200).json({ message: "Single attendance updated successfully" });
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Error updating leave", error: err.message });
+      .json({ message: "Error updating attendance", error: err.message });
   }
 };
-

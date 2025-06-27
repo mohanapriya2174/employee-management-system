@@ -1,132 +1,101 @@
-const fs = require("fs");
-const path = require("path");
-const dayjs = require("dayjs");
-const usersPath = path.join(__dirname, "../../data/data.json");
-const leavePath = path.join(__dirname, "../../data/leaveData.json");
-const attendancePath = path.join(__dirname, "../../data/attendence.json");
 
+const mysql = require("mysql2/promise");
+const dotenv = require("dotenv");
+const connection = require("../model"); // your mysql connection using promise
 
-function readUsers() {
-  const data = fs.readFileSync(usersPath, "utf-8");
-  return JSON.parse(data);
+async function findUser(email) {
+  const [rows] = await connection.query("SELECT * FROM users WHERE email = ?", [
+    email,
+  ]);
+  return rows[0];
 }
 
-function writeUsers(users) {
-  fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), "utf-8");
+// Find user by id
+async function findUserwithid(id) {
+  const [rows] = await connection.query("SELECT * FROM users WHERE id = ?", [
+    id,
+  ]);
+  return rows[0];
 }
 
-function findUser(email) {
-  const users = readUsers();
-  return users.find((user) => user.email === email);
-}
-function findUserwithid(id) {
-  const users = readUsers();
-  return users.find((user) => user.id === id);
-}
-
-function addUser(user) {
-  const users = readUsers();
-  users.push(user);
-  writeUsers(users);
-}
-function readAllLeave() {
-  const data = fs.readFileSync(leavePath, "utf-8");
-  return JSON.parse(data);
-}
-
-function readLeaves(id) {
-  const leaves = readAllLeave();
-  //console.log(leaves);
-  return leaves.filter(
-    (leave) => String(leave.id).trim() === String(id).trim()
+// Add user
+async function addUser(user) {
+  const { id, email, password, username, role } = user;
+  await connection.query(
+    "INSERT INTO users (id, email, password, username, role) VALUES (?, ?, ?, ?, ?)",
+    [id, email, password, username, role]
   );
+  return user;
 }
 
-function addLeave(newLeave) {
-  const leaves = readAllLeave();
-  leaves.unshift(newLeave);
-  fs.writeFile(leavePath, JSON.stringify(leaves, null, 2), (err) => {
-    if (err) throw err;
-    console.log("Leave added successfully.");
-  });
+// Read leaves for user
+async function readLeaves(id) {
+  const [rows] = await connection.query(
+    "SELECT * FROM leave_requests WHERE emp_id = ?",
+    [id]
+  );
+  return rows;
 }
 
-function writeAllLeave(leaves) {
-  fs.writeFileSync(leavePath, JSON.stringify(leaves, null, 2), "utf-8");
+// Read all leaves (for admin)
+async function readAllLeave() {
+  const [rows] = await connection.query("SELECT * FROM leave_requests");
+  return rows;
 }
 
-function updateapprove(index) {
-  const leaves = readAllLeave();
-
-  if (index < 0 || index >= leaves.length) {
-    throw new Error("Invalid index");
-  }
-
-  const leave = leaves[index];
-  leave.status = "Approved";
-
-  writeAllLeave(leaves); // ← Save changes!
+// Add leave
+async function addLeave(leave) {
+  const { name, id, fromDate, toDate, noOfDays, reason, status } = leave;
+  await connection.query(
+    "INSERT INTO leave_requests (emp_id, emp_name, from_date, to_date, no_of_days, reason, status) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [id, name, fromDate, toDate, noOfDays, reason, status]
+  );
   return leave;
 }
 
-function readAllAttendence() {
-  const data = fs.readFileSync(attendancePath, "utf-8");
-  return JSON.parse(data);
-}
-
-function getattendence(id, month, year) {
-  const attendence = readAllAttendence();
-  return attendence.filter(
-    (att) =>
-      String(att.id).trim() === String(id).trim() &&
-      att.month === month &&
-      String(att.year).trim() === String(year).trim()
+// Approve leave (using leave id)
+async function updateapprove(leaveId) {
+  await connection.query(
+    "UPDATE leave_requests SET status = 'Approved' WHERE id = ?",
+    [leaveId]
   );
 }
 
-function writeAllAttendence(data) {
-  fs.writeFileSync(attendancePath, JSON.stringify(data, null, 2));
+async function getattendence(id, month, year) {
+  const [rows] = await connection.query(
+    "SELECT * FROM attendance WHERE emp_id = ? AND attendance_month = ? AND attendance_year = ?",
+    [id, month, year]
+  );
+  return rows;
 }
 
-function updateAttendence(empId, month, year, updated) {
-  const attendance = readAllAttendence();
-
-  const index = attendance.findIndex(
-    (entry) =>
-      entry.id === empId &&
-      entry.month.toLowerCase() === month.toLowerCase() &&
-      entry.year.toString() === year.toString()
+async function updateAttendence(empId, year, month, day, hour, status) {
+  const [rows] = await connection.query(
+    "SELECT * FROM attendance WHERE emp_id = ? AND attendance_month = ? AND attendance_year = ? AND attendance_day = ? AND attendance_hour = ?",
+    [empId, month, year, day, hour]
   );
 
-  if (index !== -1) {
-    // 🔁 Update existing record
-    //console.log(updated);
-    attendance[index].records = updated;
+  if (rows.length > 0) {
+    await connection.query(
+      "UPDATE attendance SET status = ? WHERE emp_id = ? AND attendance_month = ? AND attendance_year = ? AND attendance_day = ? AND attendance_hour = ?",
+      [status, empId, month, year, day, hour]
+    );
   } else {
-    // ➕ Create a new record if not found
-    attendance.push({
-      empId,
-      month,
-      year,
-      records: updated,
-    });
+    await connection.query(
+      "INSERT INTO attendance (emp_id,  attendance_year,attendance_month, attendance_day,attendance_hour,status) VALUES (?, ?, ?, ?, ?, ?)",
+      [empId, year, month, day, hour, status]
+    );
   }
-
-  // 💾 Save to file
-  writeAllAttendence(attendance);
 }
-
 
 module.exports = {
   findUser,
   findUserwithid,
   addUser,
-  readUsers,
   readLeaves,
   addLeave,
   readAllLeave,
   updateapprove,
   getattendence,
   updateAttendence,
-  
 };

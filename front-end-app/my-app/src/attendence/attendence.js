@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../sidebar/sidebar";
 import "./attendence.css";
+
 const workingHours = [
   "00:00",
   "01:00",
@@ -56,28 +57,27 @@ const initializeAttendance = () => {
     });
     data.push({ day: i, hours: dayRow });
   }
-  //console.log(data);
   return data;
 };
 
+// 🔧 CHANGED: New function to map flat backend structure into UI matrix
 const mergeBackendWithTemplate = (attendanceData, newData) => {
-  const backendRecords = newData.attendence[0].records;
+  const rawEntries = newData.attendence;
 
   return attendanceData.map((dayEntry) => {
-    const dayStr = dayEntry.day.toString(); // backend uses string keys
-    const backendDay = backendRecords[dayStr];
+    const updatedHours = { ...dayEntry.hours };
 
-    if (backendDay) {
-      return {
-        ...dayEntry,
-        hours: {
-          ...dayEntry.hours,
-          ...backendDay.hours, // only merge that day
-        },
-      };
-    } else {
-      return dayEntry;
-    }
+    rawEntries.forEach((entry) => {
+      if (entry.attendance_day === dayEntry.day) {
+        const hourKey = entry.attendance_hour.slice(0, 5); // convert "00:00:00" to "00:00"
+        updatedHours[hourKey] = entry.status;
+      }
+    });
+
+    return {
+      ...dayEntry,
+      hours: updatedHours,
+    };
   });
 };
 
@@ -87,7 +87,6 @@ const EmployeeAttendance = () => {
   const [selectedMonth, setSelectedMonth] = useState("June");
   const [selectedEmployee, setEmployee] = useState("1749800232450");
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  //console.log(selectedMonth, selectedYear, userRole, selectedEmployee);
 
   useEffect(() => {
     const userDetails = async () => {
@@ -103,20 +102,12 @@ const EmployeeAttendance = () => {
         throw new Error(errorText);
       }
       const role = await response.json();
-      //console.log(role.role);
       setUserRole(role.role);
     };
     userDetails();
   }, []);
 
   useEffect(() => {
-    console.log(
-      "Effect triggered with:",
-      selectedMonth,
-      selectedYear,
-      userRole,
-      selectedEmployee
-    );
     const fetchAttendence = async () => {
       const token = localStorage.getItem("token");
       try {
@@ -138,8 +129,9 @@ const EmployeeAttendance = () => {
         );
 
         const newData = await response.json();
-        console.log(newData);
+        console.log(newData); // debug
 
+        // 🔧 CHANGED: Handle case where no data exists for employee
         if (newData.attendence[0] === undefined) {
           setAttendanceData(initializeAttendance());
         } else {
@@ -149,6 +141,7 @@ const EmployeeAttendance = () => {
           );
           setAttendanceData(finalData);
         }
+
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(errorText);
@@ -161,64 +154,39 @@ const EmployeeAttendance = () => {
     fetchAttendence();
   }, [selectedMonth, selectedYear, userRole, selectedEmployee]);
 
-  const updateAttendence = async (updated) => {
-    const token = localStorage.getItem("token");
-    //console.log(updated);
-    const updatedObject = {};
-    updated.forEach((entry) => {
-      updatedObject[String(entry.day)] = entry;
-    });
-    try {
-      const response = await fetch(
-        "http://localhost:4000/api/updateAttendence",
-        {
-          method: "put",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-          body: JSON.stringify({
-            month: selectedMonth,
-            year: selectedYear,
-            role: userRole,
-            empId: selectedEmployee,
-            updated: updatedObject,
-          }),
-        }
-      );
-      console.log(response);
-    } catch (err) {}
-  };
-
   const toggleAttendance = (targetDayIndex, targetHour) => {
-    const updated = attendanceData.map((entry, dayIndex) => {
-      if (dayIndex === targetDayIndex) {
-        // loop through each hour in this row and modify only the clicked one
-        const newHours = {};
-        for (const hour of workingHours) {
-          if (hour === targetHour) {
-            const current = entry.hours[hour];
-            newHours[hour] = current === "" ? "P" : current === "P" ? "A" : "";
-          } else {
-            newHours[hour] = entry.hours[hour]; // copy untouched hours
-          }
-        }
-        return { ...entry, hours: newHours };
-      } else {
-        return entry; // keep other rows untouched
-      }
-    });
+    const updated = [...attendanceData];
+    const current = updated[targetDayIndex].hours[targetHour];
+    const newStatus = current === "" ? "P" : current === "P" ? "A" : "";
 
+    // ✅ UI update
+    updated[targetDayIndex].hours[targetHour] = newStatus;
     setAttendanceData(updated);
-    console.log(updated);
-    updateAttendence(updated);
+
+    // ✅ Optimized single API call
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:4000/api/updateAttendence", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        empId: selectedEmployee,
+        year: selectedYear,
+        month: selectedMonth,
+        day: targetDayIndex + 1,
+        hour: targetHour,
+        status: newStatus,
+      }),
+    }).then((res) => console.log("Single cell update:", res.status));
   };
 
   return (
     <div>
       <Sidebar />
       <div className="attendance-container">
-        <h2>Employee Attendance - June</h2>
+        <h2>Employee Attendance - {selectedMonth}</h2>
         <div className="header-section">
           <h2>Employee Attendance</h2>
           <div className="selector-container">
@@ -280,8 +248,10 @@ const EmployeeAttendance = () => {
                         : "empty"
                     }
                     onClick={() => {
-                      if(userRole === "admin"){
-                      toggleAttendance(dayIndex, hour)}}}
+                      if (userRole === "admin") {
+                        toggleAttendance(dayIndex, hour);
+                      }
+                    }}
                   >
                     {entry.hours[hour]}
                   </td>

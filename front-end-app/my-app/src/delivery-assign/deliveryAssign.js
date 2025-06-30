@@ -31,7 +31,7 @@ const DeliveryAssign = () => {
       <Sidebar />
       <div className="assign-part">
         <div>{userRole === "admin" && <AddAssignment />}</div>
-        <AssignmentTable />
+        <AssignmentTable isEmp={userRole === "emp"}/>
       </div>
     </div>
   );

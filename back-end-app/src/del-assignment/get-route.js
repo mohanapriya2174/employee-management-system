@@ -4,6 +4,7 @@ exports.getDrivingRoute = function (stops) {
   if (!stops || stops.length < 2) {
     throw new Error("At least two coordinates are required.");
   }
+  //console.log(stops);
 
   const coordinates = stops.map(p => `${p.lng},${p.lat}`).join(';');
 

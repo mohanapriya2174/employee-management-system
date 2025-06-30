@@ -13,7 +13,7 @@ exports.assignDeliveries = async () => {
     WHERE assigned_to = ""
     ORDER BY delivery_deadline ASC
   `);
-  // console.log(deliveries);
+  console.log(deliveries);
 
   // 2. Fetch employees and their vehicles
   const [employees] = await connection.query(`
@@ -24,7 +24,7 @@ exports.assignDeliveries = async () => {
     FROM employee_data e
     JOIN vehicles v ON e.vehicle_id = v.vehicle_id
   `);
-  console.log(employees);
+  //console.log(employees);
   for (const delivery of deliveries) {
     let bestEmployee = null;
     let shortestEta = Infinity;
@@ -71,9 +71,7 @@ exports.assignDeliveries = async () => {
           shortestEta = eta;
         }
       } catch (err) {
-        console.warn(
-          `Route error for delivery ${delivery.id}: ${err.message}`
-        );
+        console.warn(`Route error for delivery ${delivery.id}: ${err.message}`);
       }
     }
 
@@ -86,9 +84,13 @@ exports.assignDeliveries = async () => {
       );
 
       // 2. Update employee current_load
-      const newLoad = (bestEmployee.current_load || 0) + delivery.load_size;
+      const newLoad = Math.max(
+        0,
+        bestEmployee.load_capacity - bestEmployee.current_load
+      );
+      console.log(`new load ${bestEmployee.emp_id} load is ${newLoad}`);
       await connection.query(
-        `UPDATE employee_data SET current_load = ? WHERE emp_id = ?`,
+        `UPDATE vehicles SET load_capacity = ? WHERE assigned_to = ?`,
         [newLoad, bestEmployee.emp_id]
       );
 

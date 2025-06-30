@@ -19,12 +19,11 @@ const AddAssignment = () => {
   //         headers: { Authorization: token },
   //       });
   //     }catch(err){
-        
+
   //     }
   //   }
-    
-  // })
 
+  // })
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,9 +62,22 @@ const AddAssignment = () => {
       alert("Submission failed.");
     }
   };
-  const handleAssign=async()=>{
-
-  }
+  const handleAssign = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("http://localhost:4000/api/assign", {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+      });
+      console.log("deliveries are assigned");
+    } catch (err) {
+      console.error("Submit error", err);
+    }
+  };
   return (
     <div className="delivery-assign">
       <h2>Admin Delivery Assignment</h2>

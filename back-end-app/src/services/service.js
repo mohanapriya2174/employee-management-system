@@ -1,6 +1,4 @@
 
-const mysql = require("mysql2/promise");
-const dotenv = require("dotenv");
 const connection = require("../model"); // your mysql connection using promise
 
 async function findUser(email) {

@@ -8,6 +8,16 @@ router.put(
   userController.ensureAuthenticated,
   deliveryController.addDelivery
 );
-router.get("/getdeliveries",userController.ensureAuthenticated,deliveryController.getalldeliveries);
+router.get(
+  "/getdeliveries",
+  userController.ensureAuthenticated,
+  deliveryController.getalldeliveries
+);
+
+router.put(
+  "/updateDeliveryStatus",
+  userController.ensureAuthenticated,
+  deliveryController.updateDeliverStatus
+);
 
 module.exports = router;

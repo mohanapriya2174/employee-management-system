@@ -32,3 +32,22 @@ exports.getalldeliveries = async (req, res) => {
       .json({ message: "Error updating leave", error: err.message });
   }
 };
+
+exports.updateDeliverStatus = async (req, res) => {
+  try {
+    const id= req.user.id;
+    const users = await userService.findUserwithid(id);
+    console.log(req.body);
+    const data = req.body;
+    if (users.role === "emp") {
+      await deliveryService.updateDeliveryStatus(data);
+      res
+        .status(200)
+        .json({ message: "delivery status and location updated successfully" });
+    } else {
+      res.status(403).json({ message: "Unauthorized" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

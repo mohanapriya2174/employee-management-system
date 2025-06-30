@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-const AsignmentTable = () => {
+const AsignmentTable = ({ isEmp }) => {
   const [deliveries, setdeliveries] = useState([]);
   const [unassigned, setunassigned] = useState([]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchDeliveries = async () => {
@@ -44,12 +45,20 @@ const AsignmentTable = () => {
           };
 
           const isToday = deliveryObj.date === today;
+          console.log(today, deliveryObj.date);
           const isNotCompleted = deliveryObj.status !== "completed";
 
-          if ((isToday || isNotCompleted) && !deliveryObj.assigned_to) {
+          if (!deliveryObj.assigned_to) {
             unassigned.push(deliveryObj);
           } else {
-            assigned.push(deliveryObj);
+            if (isToday) {
+              assigned.push(deliveryObj);
+            } else {
+              if (isNotCompleted) {
+                console.log(isNotCompleted);
+                assigned.push(deliveryObj);
+              }
+            }
           }
         }
 
@@ -64,18 +73,40 @@ const AsignmentTable = () => {
     fetchDeliveries();
   }, []);
 
-  // const toggelStatus = ( items, index) => {
-  //   const updatedList = [...targetList];
-  //   const currentStatus = updatedList[index].status;
+  const setStatus = async (items) => {
+    try {
+      await fetch("http://localhost:4000/api/updateDeliveryStatus", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          delivery_id: items.id,
+          status: items.status,
+          lat: items.lat,
+          lng: items.lng,
+          load_size: items.load_size,
+          assigned_to: items.assigned_to,
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to update status:", err.message);
+    }
+  };
 
-  //   let nextStatus = "not started";
-  //   if (currentStatus === "not started") nextStatus = "pending";
-  //   else if (currentStatus === "pending") nextStatus = "completed";
-  //   else if (currentStatus === "completed") nextStatus = "not started";
-
-  //   updatedList[index].status = nextStatus;
-  //   setList(updatedList);
-  // };
+  const toggelStatus = (items, index) => {
+    const currentStatus = items.status;
+    const newStatus = [...deliveries];
+    let nextStatus = "Assigned";
+    if (currentStatus === "Assigned") nextStatus = "Started";
+    else if (currentStatus === "Started") nextStatus = "completed";
+    else if (currentStatus === "completed") nextStatus = "Assigned";
+    newStatus[index].status = nextStatus;
+    console.log(newStatus);
+    setdeliveries(newStatus);
+    setStatus(items);
+  };
 
   return (
     <div className="table-section">
@@ -99,9 +130,10 @@ const AsignmentTable = () => {
               <td>{items.assigned_to}</td>
               <td>{items.id}</td>
               <td
-              // onClick={() => {
-              //   toggelStatus(items, index);
-              // }}
+                onClick={() => {
+                  isEmp && toggelStatus(items, index);
+                  console.log(items);
+                }}
               >
                 {items.status}
               </td>

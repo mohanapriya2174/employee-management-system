@@ -22,8 +22,8 @@ function Login() {
     if (response.ok) {
       localStorage.setItem("token", data.token);
       setMsg("Login successful!");
-      console.log(data.token);
       navigate("/dashboard");
+      console.log(data.token)
     } else {
       setMsg(data.message || "Login failed");
     }
@@ -32,6 +32,7 @@ function Login() {
   return (
     <div className="body">
       <form onSubmit={handleLogin}>
+        <div className="logo">🚚 Logistics EMS</div>
         <h2>Login</h2>
         <input
           type="email"

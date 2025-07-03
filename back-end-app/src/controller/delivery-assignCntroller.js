@@ -25,7 +25,7 @@ exports.getalldeliveries = async (req, res) => {
   try {
     const deliveries = await deliveryService.getalldeliveries();
     res.status(200).json({ deliveries: deliveries });
-    console.log(deliveries);
+    //console.log(deliveries);
   } catch (err) {
     res
       .status(500)
@@ -37,7 +37,7 @@ exports.updateDeliverStatus = async (req, res) => {
   try {
     const id= req.user.id;
     const users = await userService.findUserwithid(id);
-    console.log(req.body);
+    //console.log(req.body);
     const data = req.body;
     if (users.role === "emp") {
       await deliveryService.updateDeliveryStatus(data);

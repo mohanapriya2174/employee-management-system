@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 
 const AddAssignment = () => {
   const [delivery, setDelivery] = useState({
@@ -11,19 +11,6 @@ const AddAssignment = () => {
     delivery_deadline: "",
   });
 
-  // useEffect(()=>{
-  //   const fetchLeave = async () => {
-  //     const token = localStorage.getItem("token");
-  //     try {
-  //       const response = await fetch("http://localhost:4000/api/assign", {
-  //         headers: { Authorization: token },
-  //       });
-  //     }catch(err){
-
-  //     }
-  //   }
-
-  // })
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

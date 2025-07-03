@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-const AsignmentTable = ({ isEmp }) => {
+const AsignmentTable = ({ isEmp, UserID }) => {
   const [deliveries, setdeliveries] = useState([]);
   const [unassigned, setunassigned] = useState([]);
   const token = localStorage.getItem("token");
-
+  console.log(`user id ${UserID}`);
   useEffect(() => {
     const fetchDeliveries = async () => {
       const token = localStorage.getItem("token");
@@ -45,17 +45,19 @@ const AsignmentTable = ({ isEmp }) => {
           };
 
           const isToday = deliveryObj.date === today;
-          console.log(today, deliveryObj.date);
           const isNotCompleted = deliveryObj.status !== "completed";
 
           if (!deliveryObj.assigned_to) {
             unassigned.push(deliveryObj);
           } else {
-            if (isToday) {
-              assigned.push(deliveryObj);
+            if (isEmp) {
+              if (String(deliveryObj.assigned_to) === String(UserID)) {
+                if (isToday || isNotCompleted) {
+                  assigned.push(deliveryObj);
+                }
+              }
             } else {
-              if (isNotCompleted) {
-                console.log(isNotCompleted);
+              if (isToday || isNotCompleted) {
                 assigned.push(deliveryObj);
               }
             }
@@ -70,8 +72,10 @@ const AsignmentTable = ({ isEmp }) => {
         console.error("❌ Failed to fetch deliveries:", err.message);
       }
     };
-    fetchDeliveries();
-  }, []);
+    if (UserID && isEmp !== undefined) {
+      fetchDeliveries();
+    }
+  }, [UserID, isEmp]);
 
   const setStatus = async (items) => {
     try {

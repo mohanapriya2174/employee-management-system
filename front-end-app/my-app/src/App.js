@@ -9,6 +9,7 @@ import Dashboard from "./dashboard/dashboard.js";
 import LeaveManage from "./leaveManage/leaveManage.js";
 import EmployeeAttendance from "./attendence/attendence.js";
 import DeliveryAssign from "./delivery-assign/deliveryAssign.js";
+import VehicleAllocation from "./vehicle-alloc/vehicleAlloc.js";
 function App() {
   return (
     <div>
@@ -58,6 +59,14 @@ function App() {
           element={
             <>
               <DeliveryAssign />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/vehicles"
+          element={
+            <>
+              <VehicleAllocation />
             </>
           }
         ></Route>

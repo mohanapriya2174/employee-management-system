@@ -10,22 +10,23 @@ exports.assignDeliveries = async () => {
   // 1. Fetch unassigned deliveries
   const [deliveries] = await connection.query(`
     SELECT * FROM deliveries
-    WHERE assigned_to = ""
+    WHERE assigned_to = "" 
     ORDER BY delivery_deadline ASC
   `);
   console.log(deliveries);
 
   // 2. Fetch employees and their vehicles
-  const [employees] = await connection.query(`
-    SELECT 
-      e.emp_id, e.name, e.latitude, e.longitude, 
-      e.vehicle_id, e.max_assignments, e.current_load,
-      v.load_capacity
-    FROM employee_data e
-    JOIN vehicles v ON e.vehicle_id = v.vehicle_id
-  `);
+  // const [employees] = await connection.query(`
+  //   SELECT
+  //     e.emp_id, e.name, e.latitude, e.longitude,
+  //     e.vehicle_id, e.max_assignments, e.current_load,
+  //     v.load_capacity
+  //   FROM employee_data e
+  //   JOIN vehicles v ON e.vehicle_id = v.vehicle_id
+  // `);
   //console.log(employees);
   for (const delivery of deliveries) {
+    let i = 1;
     let bestEmployee = null;
     let shortestEta = Infinity;
 
@@ -47,11 +48,20 @@ exports.assignDeliveries = async () => {
       }
     }
 
+    const [employees] = await connection.query(`
+      SELECT 
+        e.emp_id, e.name, e.latitude, e.longitude, 
+        e.vehicle_id, e.max_assignments, e.current_load,
+        v.load_capacity
+      FROM employee_data e
+      JOIN vehicles v ON e.vehicle_id = v.vehicle_id
+    `);
+
     for (const emp of employees) {
       const canCarry =
         (emp.current_load || 0) + delivery.load_size <= emp.load_capacity;
       if (!canCarry) continue;
-
+      emp.current_load = emp.current_load + delivery.load_size;
       await new Promise((res) => setTimeout(res, 6000)); // To avoid rate-limiting
 
       try {
@@ -104,6 +114,7 @@ exports.assignDeliveries = async () => {
       });
     }
   }
+  console.log(assignments);
 
   return assignments;
 };

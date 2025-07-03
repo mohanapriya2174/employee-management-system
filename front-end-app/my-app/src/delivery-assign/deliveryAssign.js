@@ -7,6 +7,7 @@ import AssignmentTable from "./assignmentTable";
 
 const DeliveryAssign = () => {
   const [userRole, setUserRole] = useState("");
+  const [currentUser, setCurrentUser] = useState("");
   useEffect(() => {
     const userDetails = async () => {
       const token = localStorage.getItem("token");
@@ -21,17 +22,18 @@ const DeliveryAssign = () => {
         throw new Error(errorText);
       }
       const role = await response.json();
-      //console.log(role.role);
+      console.log(role);
       setUserRole(role.role);
+      setCurrentUser(role.id);
     };
     userDetails();
   }, []);
   return (
     <div>
       <Sidebar />
-      <div className="assign-part">
+      <div className="main-content">
         <div>{userRole === "admin" && <AddAssignment />}</div>
-        <AssignmentTable isEmp={userRole === "emp"}/>
+        <AssignmentTable isEmp={userRole === "emp"} UserID={currentUser} />
       </div>
     </div>
   );

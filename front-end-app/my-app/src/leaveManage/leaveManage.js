@@ -8,8 +8,6 @@ const LeaveManage = () => {
   const [applications, setApplications] = useState([]);
   const [userRole, setUserRole] = useState("");
 
-  
-
   useEffect(() => {
     const fetchLeave = async () => {
       const token = localStorage.getItem("token");

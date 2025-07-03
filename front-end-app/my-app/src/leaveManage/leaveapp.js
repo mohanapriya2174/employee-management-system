@@ -53,6 +53,7 @@ const LeaveApplication = ({ onLeaveApply }) => {
     }
   };
   return (
+  
     <form onSubmit={handleSubmit} className="leave-form">
       <label>Name:</label>
       <input

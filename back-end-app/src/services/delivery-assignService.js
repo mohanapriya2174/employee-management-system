@@ -54,7 +54,7 @@ async function uploadDelivery(input, createdById) {
 
 async function getalldeliveries() {
   const [rows] = await connection.query("SELECT * FROM deliveries");
-  console.log(rows);
+  //console.log(rows);
   return rows;
 }
 

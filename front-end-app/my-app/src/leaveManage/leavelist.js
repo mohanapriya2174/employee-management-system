@@ -7,10 +7,10 @@ const LeaveList = ({ applications, isAdmin, onApprove }) => {
       <ul className="Leave-list">
         {applications.map((app, index) => (
           <li key={index} className="leave-card">
-            <strong>{app.name}</strong>
-            {app.id}
+            <strong>{app.emp_name}</strong>
+            {app.emp_id}
             <br />
-            {app.fromDate} to {app.toDate} ({app.noOfDays} days)
+            {app.from_date.split("T")[0]} to {app.to_date.split("T")[0]} ({app.no_of_days} days)
             <br />
             <em>reason: </em>
             {app.reason}

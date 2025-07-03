@@ -186,9 +186,9 @@ const EmployeeAttendance = () => {
     <div>
       <Sidebar />
       <div className="attendance-container">
-        <h2>Employee Attendance - {selectedMonth}</h2>
         <div className="header-section">
-          <h2>Employee Attendance</h2>
+          <h2>Employee Attendance - {selectedMonth}</h2>
+          {/* <h2>Employee Attendance</h2> */}
           <div className="selector-container">
             {userRole === "admin" && (
               <select

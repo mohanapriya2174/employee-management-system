@@ -41,6 +41,7 @@ function Register() {
   };
 
   return (
+    <div className="register-body">
     <form onSubmit={handleRegister}>
       <h2>Register</h2>
       <input
@@ -85,7 +86,7 @@ function Register() {
           Login here
         </span>
       </p>
-    </form>
+    </form></div>
   );
 }
 

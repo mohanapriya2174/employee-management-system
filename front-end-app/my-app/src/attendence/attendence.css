@@ -1,15 +1,15 @@
+
 .attendance-container {
-  max-width: 100vw;
-  margin-left: 240px;
+  margin-left: 240px; 
   padding: 20px;
-  height: 100vh;
-  overflow-y: auto;
-  white-space: nowrap;
-  box-sizing: border-box;
-  overflow-x: auto;
+
   font-family: Arial, sans-serif;
+  background-color: #f4f7fc; 
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
+/* Header Section Styling */
 .header-section {
   display: flex;
   justify-content: space-between;
@@ -23,34 +23,90 @@
 }
 
 .selector-container select {
-  padding: 5px 10px;
+  padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
 }
 
+.selector-container select:focus {
+  border-color: #6c757d;
+  outline: none;
+}
+
+/* Attendance Table */
 .attendance-table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 600px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
 }
 
 .attendance-table th,
 .attendance-table td {
   border: 1px solid #ddd;
   text-align: center;
-  padding: 10px;
-  min-width: 60px;
+
+  color: #333;
+
   transition: background-color 0.3s ease;
 }
 
 .attendance-table th {
-  background-color: #f2f2f2;
-  color: #333;
+  background-color: #6c757d; /* Soft grey-blue header */
+  color: white;
   font-weight: bold;
 }
 
+.attendance-table td {
+  background-color: #f9f9f9; /* Light gray for table rows */
+}
+
+.attendance-table tr:nth-child(even) {
+  background-color: #f1f1f1; /* Lighter striping */
+}
+
+.attendance-table tr:hover {
+  background-color: #e9ecef; /* Subtle hover effect */
+}
+
+/* Empty cells */
 .attendance-table td.empty {
   background-color: #f9f9f9;
   color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .attendance-container {
+    margin-left: 0; /* Remove left margin on small screens */
+    margin-top: 75px;
+  }
+
+  .selector-container select {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .header-section {
+    flex-direction: column;
+  }
+  .header-section h2 {
+    font-size: 16px;
+    padding-bottom: 10px;
+  }
+
+
+  .attendance-table th,
+  .attendance-table td {
+    font-size: 8px;
+    padding: 8px;
+  }
+
+  .attendance-table {
+    min-width: 100%;
+    width: 100%;
+  }
 }

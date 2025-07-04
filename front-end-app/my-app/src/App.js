@@ -10,6 +10,7 @@ import LeaveManage from "./leaveManage/leaveManage.js";
 import EmployeeAttendance from "./attendence/attendence.js";
 import DeliveryAssign from "./delivery-assign/deliveryAssign.js";
 import VehicleAllocation from "./vehicle-alloc/vehicleAlloc.js";
+import ShiftAdminPage from "./shiftSchudele/shiftManage.js";
 function App() {
   return (
     <div>
@@ -67,6 +68,14 @@ function App() {
           element={
             <>
               <VehicleAllocation />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/shifts"
+          element={
+            <>
+              <ShiftAdminPage />
             </>
           }
         ></Route>

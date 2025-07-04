@@ -30,16 +30,15 @@ exports.getVehicles = async (req, res) => {
 };
 exports.getVehicleAlloc = async (req, res) => {
   try {
-    await vehicleAllocService.getVehicleAlloc();
-    res
-      .status(200)
-      .json({ message: "the vehicle allocation list is fitched succesfully" });
+    const vehiAllocList = await vehicleAllocService.getVehicleAlloc();
+    res.status(200).json({
+      vehiAllocList: vehiAllocList,
+      // message: "the vehicle allocation list is fitched succesfully",
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        message: "Error in fetching vehicle allocation list",
-        error: err.message,
-      });
+    res.status(500).json({
+      message: "Error in fetching vehicle allocation list",
+      error: err.message,
+    });
   }
 };

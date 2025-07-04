@@ -26,8 +26,8 @@ const VehicleAllocation = () => {
         });
         const empData = await empRes.json();
         let empIds = [];
-
-        empIds = empData.emplist.map((emp) => emp.emp_id);
+        //console.log(empData.emplist);
+        empIds = empData.emplist;
 
         const vehRes = await fetch("http://localhost:4000/api/vehicles", {
           method: "GET",
@@ -38,8 +38,8 @@ const VehicleAllocation = () => {
         });
         const vehData = await vehRes.json();
         let vehIds = [];
-        console.log(vehData);
-        vehIds = vehData.vehlist.map((veh) => veh.vehicle_id);
+        //console.log(vehData.vehlist);
+        vehIds = vehData.vehlist;
 
         const allocRes = await fetch(
           "http://localhost:4000/api/vehiallocations",
@@ -52,6 +52,9 @@ const VehicleAllocation = () => {
           }
         );
         const allocData = await allocRes.json();
+        // console.log(allocData.vehiAllocList[0]);
+
+        const allocated = allocData.vehiAllocList;
 
         // Log first employee ID for debugging
         if (empData && empData.length > 0) {
@@ -59,11 +62,9 @@ const VehicleAllocation = () => {
         }
 
         // Update state
-        setEmployees(empIds);
-        console.log(employees);
+        setEmployees([...empIds]);
         setVehicles(vehIds);
-        console.log(vehIds);
-        setAllocations(allocData);
+        setAllocations(allocated[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -76,9 +77,10 @@ const VehicleAllocation = () => {
     if (!selectedEmployee || !selectedVehicle) {
       return alert("Please select both an employee and a vehicle.");
     }
+    console.log(selectedEmployee,selectedVehicle);
     await axios.post("/api/allocations", {
-      empId: selectedEmployee,
-      vehicleId: selectedVehicle,
+      emp_Id: selectedEmployee,
+      vehicle_Id: selectedVehicle,
     });
     // refresh the allocation table
     const allocRes = await axios.get("/api/allocations");
@@ -99,8 +101,8 @@ const VehicleAllocation = () => {
           >
             <option value="">— Select Employee —</option>
             {employees.map((emp) => (
-              <option key={emp.id} value={emp.id}>
-                {emp.name}
+              <option key={emp.emp_id} value={emp.emp_id}>
+                {emp.emp_id}
               </option>
             ))}
           </select>
@@ -112,8 +114,8 @@ const VehicleAllocation = () => {
           >
             <option value="">— Select Vehicle —</option>
             {vehicles.map((veh) => (
-              <option key={veh.id} value={veh.id}>
-                {veh.name} ({veh.type})
+              <option key={veh.vehicle_id} value={veh.vehicle_id}>
+                {veh.vehicle_id}
               </option>
             ))}
           </select>
@@ -136,9 +138,9 @@ const VehicleAllocation = () => {
           <tbody>
             {allocations.map((a, i) => (
               <tr key={i}>
-                <td>{a.employeeName}</td>
-                <td>{a.vehicleName}</td>
-                <td>{a.vehicleType}</td>
+                <td>{a.assigned_to}</td>
+                <td>{a.vehicle_id}</td>
+                <td>{a.vehicle_name}</td>
               </tr>
             ))}
           </tbody>

@@ -1,0 +1,120 @@
+.wrapper {
+  padding-left: 244px;
+}
+
+/* --- wrapper --- */
+.shift-wrapper {
+  overflow-x: auto; /* horizontal scroll on small screens */
+  max-width: 100%;
+}
+
+/* --- table --- */
+.shift-table {
+  border-collapse: collapse;
+  width: max-content; /* grow to fit columns */
+  min-width: 800px; /* prevents extreme squish */
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+/* --- header cells --- */
+.header-cell {
+  border: 1px solid #ccc;
+  padding: 8px;
+  background: #f0f0f0;
+  text-align: center;
+  position: sticky;
+  top: 0; /* stick the header row */
+  z-index: 2;
+}
+
+/* --- employee name column --- */
+.emp-cell {
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-weight: 600;
+  background: #fff;
+  white-space: nowrap;
+}
+
+.sticky-col {
+  position: sticky;
+  left: 0; /* stick the first column */
+  background: #fff;
+  z-index: 3; /* above day cells */
+}
+
+/* --- day cells --- */
+.day-cell {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+  min-width: 60px;
+  background: #fff;
+}
+
+.shift-form {
+  display: flex;
+  margin-bottom: 30px;
+  flex-direction: column; /* mobile default: stack */
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  max-width: 100%;
+  background: #fafafa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* inputs -------------------------------------------------------*/
+.shift-input {
+  flex: 1;
+  min-width: 130px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* button -------------------------------------------------------*/
+.shift-btn {
+  padding: 8px 14px;
+  background: #0078d7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.shift-btn:hover {
+  background: #0063b3;
+}
+
+/* --- responsive tweak: narrow screens --- */
+@media (max-width: 600px) {
+  .wrapper {
+    padding-left: 0px;
+  }
+  .shift-table {
+    font-size: 12px;
+    min-width: 600px;
+  }
+  .day-cell {
+    min-width: 50px;
+    padding: 4px;
+  }
+
+  .shift-form {
+    margin-top: 40px;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap; /* wrap if screen slightly smaller */
+  }
+  .shift-input {
+    width: auto;
+  }
+  .shift-btn {
+    margin-left: auto; /* push button to the end */
+  }
+}

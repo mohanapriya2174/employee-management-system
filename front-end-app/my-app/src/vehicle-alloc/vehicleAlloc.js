@@ -17,7 +17,7 @@ const VehicleAllocation = () => {
 
     const load = async () => {
       try {
-        const empRes = await fetch("http://localhost:4000/api/employees", {
+        const empRes = await fetch("https://employee-management-system-zqqv.onrender.com/api/employees", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -29,7 +29,7 @@ const VehicleAllocation = () => {
         //console.log(empData.emplist);
         empIds = empData.emplist;
 
-        const vehRes = await fetch("http://localhost:4000/api/vehicles", {
+        const vehRes = await fetch("https://employee-management-system-zqqv.onrender.com/api/vehicles", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -42,7 +42,7 @@ const VehicleAllocation = () => {
         vehIds = vehData.vehlist;
 
         const allocRes = await fetch(
-          "http://localhost:4000/api/vehiallocations",
+          "https://employee-management-system-zqqv.onrender.com/api/vehiallocations",
           {
             method: "GET",
             headers: {

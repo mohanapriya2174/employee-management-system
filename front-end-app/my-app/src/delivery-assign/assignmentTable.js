@@ -11,7 +11,7 @@ const AsignmentTable = ({ isEmp, UserID }) => {
 
       try {
         const response = await fetch(
-          "http://localhost:4000/api/getdeliveries",
+          "https://employee-management-system-zqqv.onrender.com/api/getdeliveries",
           {
             headers: {
               Authorization: token,
@@ -79,7 +79,7 @@ const AsignmentTable = ({ isEmp, UserID }) => {
 
   const setStatus = async (items) => {
     try {
-      await fetch("http://localhost:4000/api/updateDeliveryStatus", {
+      await fetch("https://employee-management-system-zqqv.onrender.com/api/updateDeliveryStatus", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

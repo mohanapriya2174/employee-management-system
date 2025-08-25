@@ -30,7 +30,7 @@ const AddAssignment = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/addassignment", {
+      const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/addassignment", {
         method: "put",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const AddAssignment = () => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:4000/api/assign", {
+      const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/assign", {
         method: "get",
         headers: {
           "Content-Type": "application/json",

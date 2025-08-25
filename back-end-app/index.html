@@ -1,0 +1,18 @@
+import {useEffect,useState} from "react";
+import daysjs from "daysjs";
+import "./ShiftCalenderTable.css";
+
+export default function ShiftCalenderTable({year,month}){
+    const [data,setData]=useState(null);
+
+    useEffect(()=>{
+        fetch(`http://hocalhost:4000/api/shifts/${year}/${month}`)
+        .then(res=>res.json())
+        .then(setData)
+        .catch(console.error);
+    },[year,month]);
+
+    if(!data) return <p>Loading shifts...</p>;
+
+    const dysInMonth = dayjs(`${year}-${daysInMont},(_,)`)
+}

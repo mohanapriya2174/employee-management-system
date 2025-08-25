@@ -1,0 +1,162 @@
+.main-content {
+  margin-left: 240px;
+  padding: 20px;
+  width: calc(100% - 240px);
+  box-sizing: border-box;
+}
+
+/* Styling for the delivery assign form */
+.delivery-assign {
+  padding: 2rem;
+  font-family: "Arial", sans-serif;
+  background-color: #ffffff; /* White background for the form */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  width: calc(100% - 240px); /* Make form fit the space without overlapping */
+  margin: 0 auto;
+  margin-top: 2rem;
+  border-radius: 10px; /* Slightly rounded corners for form */
+}
+
+/* Form Section */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Input Fields */
+input,
+select {
+  padding: auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: #6c757d;
+  outline: none;
+  box-shadow: 0 0 5px rgba(108, 117, 125, 0.3);
+}
+
+/* Button Styling */
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: #6c757d;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5a6268;
+}
+
+button:active {
+  background-color: #4e555b;
+}
+
+/* Table Section */
+.table-section {
+  margin-top: 30px;
+  overflow-x: auto; /* Horizontal scrolling if table overflows */
+}
+
+.table-section h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow around table */
+  table-layout: fixed; /* Prevent columns from expanding too much */
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  border: 1px solid #ddd;
+  word-wrap: break-word; /* Ensures content doesn't overflow */
+}
+
+/* Header Styling */
+th {
+  background-color: #6c757d; /* Softer grey-blue header */
+  color: white;
+  font-weight: bold;
+}
+
+td {
+  background-color: #f9f9f9; /* Light gray for table rows */
+}
+
+tr:nth-child(even) {
+  background-color: #f1f1f1; /* Lighter striping */
+}
+
+tr:hover {
+  background-color: #e9ecef; /* Subtle hover effect */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .delivery-assign {
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    margin-top: 75px;
+  }
+
+  .form-section {
+    gap: 8px;
+  }
+
+  input,
+  select {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+  }
+
+  table {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  th,
+  td {
+    font-size: 14px;
+  }
+
+  .sidebar {
+    width: 200px;
+  }
+
+  .sidebar ul li a {
+    font-size: 16px;
+  }
+
+  .main-content {
+    margin-left: 0; /* Remove left margin on small screens */
+    width: 100%;
+  }
+}

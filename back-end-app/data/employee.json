@@ -1,0 +1,25 @@
+[
+    {
+      "id": "1749800232450",
+      "name": "user1",
+      "current_location": {
+        "lat": 13.0800,
+        "lng": 80.2700
+      },
+      "vehicle_id": "VEH001",
+      "max_assignments": 5,
+      "current_load":0
+    },
+    {
+      "id": "1749800232454",
+      "name": "Anjali Menon",
+      "current_location": {
+        "lat": 12.9800,
+        "lng": 80.2200
+      },
+      "vehicle_id": "VEH002",
+      "max_assignments": 5,
+      "current_load":0
+    }
+  ]
+  

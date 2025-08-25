@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1749723445526,
+    "email": "test@example.com",
+    "password": "$2b$08$t/Eggw5d1N.maYSdNmOGIef/c0RR3QBAu5DhWK5QvU5D52nWkIl/K"
+  },
+  {
+    "id": 1749726933720,
+    "email": "mohanapriya21@gmail.com",
+    "password": "$2b$08$HVnemLEHuGQWfURdm5eRKuqa//YRIB03cFikh5v0v/YmJwVilw7au"
+  },
+  {
+    "id": 1749800232450,
+    "email": "user1@gmail.com",
+    "password": "$2b$08$cVFydMdXK9tcXnoBynuu7OjeImyR.836IJ9Pe7d36VOh38sSL525W",
+    "username": "user1",
+    "role": "emp"
+  },
+  {
+    "id": 1750221517459,
+    "email": "vinoth@gmail.com",
+    "password": "$2b$08$Oad16sRkmUliZGPjwqIa8.uAuP.VxloqYreOpag0SBu/XG3wlQ.Dq",
+    "username": "vinoth",
+    "role": "admin"
+  }
+]

@@ -1,0 +1,46 @@
+/* container & headings */
+.va-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+.va-heading {
+  margin-bottom: 16px;
+}
+.va-subheading {
+  margin: 24px 0 8px;
+}
+
+/* form row */
+.va-form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.va-select {
+  padding: 6px 8px;
+  min-width: 180px;
+}
+.va-btn {
+  padding: 6px 16px;
+  cursor: pointer;
+  border: 1px solid #333;
+  background: #333;
+}
+
+/* table */
+.va-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.va-table th,
+.va-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+.va-table th {
+  background: #f3f3f3;
+}

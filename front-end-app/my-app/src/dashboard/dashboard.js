@@ -8,7 +8,7 @@ const Dashboard = () => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("http://localhost:4000/api/dashboard", {
+        const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/dashboard", {
           headers: { authorization: token },
         });
         if (!response.ok) {

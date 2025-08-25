@@ -11,7 +11,7 @@ const DeliveryAssign = () => {
   useEffect(() => {
     const userDetails = async () => {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/dashboard", {
+      const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/dashboard", {
         headers: {
           "Content-Type": "application/json",
           authorization: token,

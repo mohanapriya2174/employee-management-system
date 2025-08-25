@@ -91,7 +91,7 @@ const EmployeeAttendance = () => {
   useEffect(() => {
     const userDetails = async () => {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/dashboard", {
+      const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/dashboard", {
         headers: {
           "Content-Type": "application/json",
           authorization: token,
@@ -112,7 +112,7 @@ const EmployeeAttendance = () => {
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(
-          "http://localhost:4000/api/getattendence",
+          "https://employee-management-system-zqqv.onrender.com/api/getattendence",
           {
             method: "post",
             headers: {
@@ -165,7 +165,7 @@ const EmployeeAttendance = () => {
 
     // ✅ Optimized single API call
     const token = localStorage.getItem("token");
-    fetch("http://localhost:4000/api/updateAttendence", {
+    fetch("https://employee-management-system-zqqv.onrender.com/api/updateAttendence", {
       method: "put",
       headers: {
         "Content-Type": "application/json",

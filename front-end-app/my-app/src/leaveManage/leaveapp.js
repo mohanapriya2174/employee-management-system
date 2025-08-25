@@ -24,7 +24,7 @@ const LeaveApplication = ({ onLeaveApply }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/addleave", {
+      const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/addleave", {
         method: "put",
         headers: {
           "Content-Type": "application/json",

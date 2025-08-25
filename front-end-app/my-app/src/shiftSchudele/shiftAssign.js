@@ -13,7 +13,7 @@ export default function AdminShiftForm({ onSaved }) {
 
   async function save(e) {
     e.preventDefault();
-    const res = await fetch("http://localhost:4000/api/shift-range", {
+    const res = await fetch("https://employee-management-system-zqqv.onrender.com/api/shift-range", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),

@@ -13,7 +13,7 @@ const LeaveManage = () => {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await fetch("http://localhost:4000/api/getleaveapp", {
+        const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/getleaveapp", {
           headers: { Authorization: token },
         });
 
@@ -43,7 +43,7 @@ const LeaveManage = () => {
   const handleApprove = async (index) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:4000/api/approve", {
+      const response = await fetch("https://employee-management-system-zqqv.onrender.com/api/approve", {
         method: "put",
         headers: {
           "Content-Type": "application/json",

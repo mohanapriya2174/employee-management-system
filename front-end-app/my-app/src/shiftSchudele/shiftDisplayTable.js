@@ -6,7 +6,7 @@ export default function ShiftCalendarTable({ year, month }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/shifts/${year}/${month}`)
+    fetch(`https://employee-management-system-zqqv.onrender.com/api/shifts/${year}/${month}`)
       .then(res => res.json())
       .then(setData)
       .catch(console.error);

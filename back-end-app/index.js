@@ -8,7 +8,24 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 app.use(express.json());
-app.use(cors());
+// ✅ Allow only your frontend domain
+const allowedOrigins = [
+  "http://localhost:3000", 
+  "https://employee-management-system-dhq915ko5.vercel.app"
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.use("/api", userRoutes);
 app.use("/api", deiveryassignROute);
